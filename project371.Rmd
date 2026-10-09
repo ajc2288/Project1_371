@@ -1,0 +1,102 @@
+---
+title: "project371"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+library(Stat2Data)
+library(scatterplot3d)
+data("Clothing")
+```
+
+A data frame with 60 observations on the following 8 variables.
+
+ID	Case ID
+
+Amount	Net dollar amount spent by customers in their latest purchase from this retailer
+
+Recency	Number of months since the last purchase
+
+Freq12	Number of purchases in the last 12 months
+
+Dollar12	Dollar amount of purchases in the last 12 months
+
+Freq24	Number of purchases in the last 24 months
+
+Dollar24	Dollar amount of purchases in the last 24 months
+
+Card	1 for customers who have a private-label credit card with the retailer, 0 if not
+
+
+
+```{r}
+myClothes <- Clothing
+ggplot(myClothes, aes(x=Freq24, y=Dollar24, fill=as.factor(Card)))+
+  geom_histogram(stat="identity")
+```
+
+```{r}
+summary(myClothes$Amount)
+```
+
+```{r}
+plot(myClothes$Dollar24, myClothes$Amount)
+```
+Lets Try removing the extreme point.
+
+```{r}
+rmCloth <- myClothes[1:59,]
+
+plot(rmCloth$Dollar24, rmCloth$Amount)
+```
+
+
+```{r}
+##The overall model
+clothModel <- lm(Amount~Dollar24, data=rmCloth)
+plot(clothModel, which=1)
+```
+```{r}
+##The model based on credit card
+rmCard1 <- myClothes[1:59,] %>% filter(Card==1)
+card1Model <- lm(Amount~Dollar24, data=rmCard1)
+plot(card1Model, which=1)
+
+```
+
+
+```{r}
+##The model based on no credit card
+rmCard0 <- myClothes[1:59,] %>% filter(Card==0)
+card0Model <- lm(Amount~Dollar24, data=rmCard0)
+plot(card0Model, which=1)
+
+```
+
+```{r}
+anova(clothModel)
+```
+
+```{r}
+summary(clothModel)
+```
+```{r}
+amntDollarmlr <- lm(formula = Amount ~ Freq24 + Dollar24, data = myClothes)
+summary(amntDollarmlr)
+sat3d <- scatterplot3d(myClothes$Dollar24, myClothes$Freq24, myClothes$Amount,
+                       xlab="Dollar Amount Spent (Last 24 Months)",
+                       ylab="Frequency of purchases(Last 24 Months",
+                       zlab="Amount Most recent purchase ($)")
+sat3d$plane3d(sat3d)
+```
+```{r}
+amntDollarmlr2 <- lm(formula = Amount ~ Freq24 + Dollar24, data = rmCloth)
+summary(amntDollarmlr2)
+sat3d <- scatterplot3d(rmCloth$Dollar24, rmCloth$Freq24, rmCloth$Amount,
+                       xlab="Dollar Amount Spent (Last 24 Months)",
+                       ylab="Frequency of purchases(Last 24 Months",
+                       zlab="Amount Most recent purchase ($)")
+sat3d$plane3d(sat3d)
+```
+
