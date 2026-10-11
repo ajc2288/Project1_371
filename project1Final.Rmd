@@ -44,4 +44,44 @@ question is interesting or useful. If your question changed from what you turned
 what led you to change it.
 
 
+\newpage
+```{r}
+myClothes <- Clothing
+```
+
+
+```{r libs}
+library(tidyverse)
+library(broom)
+```
+
+
+
+
+
+
+### Writeup
+
+  From the given datasets, our group selected the Clothing data set from Stat2Data, which contains 60 observations of 8 variables, collected from a large clothing retailer. This clothing retailer offers a store credit card. Our given data records the use of these cards, as well as variables on frequency, recency of latest purchase, and money spent in the past 12 and 24 months. In this, we would like to purpose the question of how much a customer would spend in their next purchase, based off of the usage of these private-label cards? 
+
+```{r}
+
+mlr.model <- lm(Dollar24 ~ Freq24 + Card, data = myClothes)
+summary(mlr.model)
+mlr.conf <- augment(mlr.model, myClothes, interval = 'confidence')
+summary(mlr.conf)
+
+max(myClothes$Amount)
+mean(myClothes$Amount)
+median(myClothes$Amount)
+
+max(myClothes$Dollar24)
+mean(myClothes$Dollar24)
+median(myClothes$Dollar24)
+```
+
+  In investigating our data, we looked for any unusual purchase amounts within the dataset. In comparing the max, mean, and median, the range difference is significantly notable. In considering the explanatory variable, dollars spent in most recent purchase (Amount), there is an oustanding outlier with a purchase of \$1,506,000. However, the median amount spent in most recent purchase is \$70. This demonstrates a significantly skewed mean of \$25201.07. 
+  
+  
+
 
