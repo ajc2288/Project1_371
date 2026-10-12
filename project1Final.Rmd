@@ -82,13 +82,12 @@ plot(mlr.model, which=2)
 The residuals shows good normality, there is some deviation at the higher and lower values, the majority of the points align with the reference line. There is a large positive residual, but it remains within acceptable limits.
 
 
-??????????
 To check for model improvements we looked at an interaction model to see if the rate of spending differs between card holders and non cardholders. 
 ```{r}
 mlr.interact <- lm(Dollar24 ~ Freq24*Card, data=rmCloth)
 summary(mlr.interact)
 ```
-?????????
+The interaction term Freq:Card had a p-value of .01245, this is statistically significant, but we decided to reject the interaction model and stick with our original. The goal of the model is for clear, business insights and the interaction model over complicates the interpretation, so it would be difficult to explain the true value of the credit card. Our original model is very good for interpretation, and aligns with the visual exploration, so adding complexity just to slightly increase the R square to .5366 is not practically useful. So we proceed with the original model.
 
 Looking at the multiple R squared value of the original model, 0.4804, This tells us approximately 48.04% of the total variation in a customer's 24 month spending is explained by this model using their number of visits, and whether or not they have a store card.
 
