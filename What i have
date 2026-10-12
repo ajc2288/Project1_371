@@ -1,0 +1,63 @@
+4.Research question and context. State the research question your final analysis addresses and give enough
+background so that someone unfamiliar with the dataset understands what you are investigating and why the
+question is interesting or useful. If your question changed from what you turned in on Wednesday, briefly explain
+what led you to change it
+.
+
+Our dataset, "Clothing", is the sales for a clothing retailer. It contains a random sample of 60 observations of customers from a large clothing retailer. It contains the variables of the net dollar amount spent in the latest purchase, number of months since the last purchase, number of purchases in the last 12 and 24 months, dollar amount of purchases in the last 12 and 24 months, and whether they have a private label credit card with the retailer.
+
+Our Research question is: 
+
+Does having a private label credit card with the retailer affect frequency and money spent? (Note: Can we
+track credit cards and non credit cards for a better predictor between the two?)
+How does frequency, and dollar amount spent affect the most recent purchase amount for a shopper?
+
+???Findings and why is it useful???
+
+
+  From the given datasets, our group selected the Clothing data set from Stat2Data, which contains 60 observations of 8 variables, collected from a large clothing retailer. This clothing retailer offers a store credit card. Our given data records the use of these cards, as well as variables on frequency, recency of latest purchase, and money spent in the past 12 and 24 months. In this, we would like to purpose the question of how much a customer would spend in their next purchase, based off of the usage of these private-label cards? 
+
+```{r}
+
+rmCloth <- myClothes[1:59,]
+
+mlr.model <- lm(Dollar24 ~ Freq24 + Card, data = rmCloth)
+summary(mlr.model)
+mlr.conf <- augment(mlr.model, rmCloth, interval = 'confidence')
+
+```
+```{r}
+max(myClothes$Amount)
+mean(myClothes$Amount)
+median(myClothes$Amount)
+
+max(myClothes$Dollar24)
+mean(myClothes$Dollar24)
+median(myClothes$Dollar24)
+```
+
+
+  In investigating our data, we looked for any unusual purchase amounts within the dataset. In comparing the max, mean, and median, the range difference is significantly notable. In considering the explanatory variable, dollars spent in most recent purchase (Amount), there is an outstanding outlier with a purchase of \$1,506,000. However, the median amount spent in most recent purchase is \$70. This demonstrates a significantly skewed mean of \$25201.07. 
+
+
+$$\widehat{\text{Dollar24}} = 124.70 + 57.65(\text{Freq24}) + 
+289.33(\text{Card})$$
+
+
+For our model, our response variable is Dollar24, the total dollar spend over the past 24 months. Our explanatory variables are Freq24, the number of purchases in the last 24 months, and Card, a binary indicator being 1 if they hold a card, 0 if not.
+We chose these because it aligns the response and predictor time frame of 24 month customer activity. We chose 24 months because it gives more data of the customers past, and with this control it gives a clearer picture and prevents bias in the model.
+The frequency slope, $\hat{\beta}_1(\text{Freq24})$, is interpreted as; holding store card status constant, each additional purchase over the 24 month period is associated with an estimated average increase of $57.65$ in total spending. $ p=0.000271$
+The card indicator $\hat{\beta}_2(\text{Card})$ shows that for customers with the exact same frequency, holding a store credit card is associated with an average spend of 289.33 dollars over non cardholders $p=0.002179$.
+The intercept $\hat{\beta}_0$ is the baseline expected spend for a non cardholder with zero visits. Every customer in the dataset visited atleast once, so Freq24 is outside the observed data range. $p=0.126$.
+
+
+```{r}
+plot(mlr.model, which=1)
+```
+
+
+Looking at the residual vs fitted values plot, it shows random scatter centered around zero, showing that a linear model is suitable. The data represents independent customer accounts sampled. The residual spread shows some mild widening around the higher fitted values, however removing the extreme point fixed somed of the fanning compared to the raw dataset.
+```{r}
+plot(mlr.model, which=2)
+```
+The residuals shows good normality, there is some deviation at the higher and lower values, the majority of the points align with the reference line. There is a large positive residual, but it remains within acceptable limits.
