@@ -61,3 +61,37 @@ Looking at the residual vs fitted values plot, it shows random scatter centered 
 plot(mlr.model, which=2)
 ```
 The residuals shows good normality, there is some deviation at the higher and lower values, the majority of the points align with the reference line. There is a large positive residual, but it remains within acceptable limits.
+
+
+
+
+```{r}
+t.test(Dollar24 ~ Card, data = cleaned.clothes)
+t.test(Freq24 ~ Card, data = cleaned.clothes)
+
+mlr.model.doll <- lm(Dollar24 ~ Card, data = cleaned.clothes)
+summary(mlr.model.doll)
+
+ mlr.model.freq <- lm(Freq24 ~ Card, data = cleaned.clothes)
+summary(mlr.model.freq)
+
+mlr.model <- lm(Dollar24 + Freq24 ~ Card, data = cleaned.clothes)
+summary(mlr.model)
+```
+
+With the use of independent t tests, we can see the two p-test values are both very statistically signifiant. The p-value of Dollar24 as a function of card is 0.0001371. The p-value of Freq24 is 0.0004462. Both of these values are significantly smaller than $\alpha$ <  0.05. Therefore we can reject the null hypothesis and show a very strong correlation between frequency and money spent and the use of a store credit card. 
+With this, we can confirm the use of a credit card through the store demonstrates a higher returning frequency and with more money spent. In interpreting the model, we would expect in a 24 month timespan, a shopper would spend about \$ 149.68. For every additional trip, a shopper may spend an additional \$ 53.79  For the use of a store-owned credit card, we can predict a shopper would spend an additional \$ 293.85 per 2 years. With this, we can see that the frequency of visits for card-bearing shoppers increase as well. Using our t-tests, we can see proof to reject the null hypothesis, as the smaller percentage indicates less of sheer random chance, but a strong correlation. However, it is wise to acknowledge the data limitations, as there were significant outliers for card users spending upwards of \$ 10000000 in a single purchase. This obviously greatly deviates from the average spender and had to be accounted for in our model. Furthermore, the outliers solely existed within the use of store credit-cards, suggesting some notable impulse shopping.       
+
+```{r}
+
+ggplot(cleaned.clothes, aes( x = Freq24, y = Dollar24, colour = as.factor(Card))) +
+    facet_wrap(~Card)+
+  geom_jitter() +
+  geom_smooth(method = 'lm', formula = Dollar24 ~ Freq24 )+
+  labs(title = "Purchase History of 24 month Retailer Data",
+       x = "Shop Frequency in 24 Months", 
+       y = "Dollar Amount Spent in Past 24 Months",
+         subtitle = "Clothes")
+
+
+```
