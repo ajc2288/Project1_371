@@ -63,7 +63,16 @@ median(myClothes$Amount)
 max(myClothes$Dollar24)
 mean(myClothes$Dollar24)
 median(myClothes$Dollar24)
+
+
+#Exploratory 
+
+
 ```
+Initially in exploring our data, we looked at the sparatic differences of the use of credit cards vs. without. In our two variables, we can see the qq plots
+
+
+
 
   In investigating our data, we looked for any unusual purchase amounts within the dataset. In comparing the max, mean, and median, the range difference is significantly notable. In considering the explanatory variable, dollars spent in most recent purchase (Amount), there is an oustanding outlier with a purchase of \$1,506,000. However, the median amount spent in most recent purchase is \$70. This demonstrates a significantly skewed mean of \$25201.07. 
   
@@ -98,4 +107,6 @@ ggplot(cleaned.clothes, aes( x = Recency, y = Amount)) +
          subtitle = "Cleaned Data")
 
 ```
+
+
 
