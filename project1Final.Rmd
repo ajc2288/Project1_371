@@ -69,7 +69,20 @@ median(myClothes$Dollar24)
 
 
 ```
-Initially in exploring our data, we looked at the sparatic differences of the use of credit cards vs. without. In our two variables, we can see the qq plots
+Initially in exploring our data, we looked at the sparatic differences of the use of credit cards vs. without. In our two variables, we can see the qq plots show vastly different normalities.
+
+```
+ggplot(cleaned.clothes, aes(sample = Dollar24)) +
+  stat_qq() +
+  stat_qq_line() +
+  labs(
+    title = "Q-Q Plot Across Groups",
+    x = "Theoretical Quantiles",
+    y = "Sample Quantiles",
+    color = "Card"
+  ) 
+```
+
 
 
 
